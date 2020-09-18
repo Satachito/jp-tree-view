@@ -1,6 +1,6 @@
 # jp-tree-view
 
-A JSON based object browser / editor Web Component.
+A JSON based object browser Web Component.
 
 * No external resources.
 * Very fast. There is no data conversion inside.
@@ -8,23 +8,15 @@ A JSON based object browser / editor Web Component.
 
 
 ## Install
-```
-npm install @satachito/jp-tree --save
-```
 
-## Running demo
-
-In our demo, we are using Bare module specifiers, ( for example `@satachito/jp-tree` to `./node_modules/@satachito/jp-tree/jp-tree.js` ). So run this demo using `es-dev-server` with `--node-resolve` option.
-
-### Serve
 ```
-npm install -g es-dev-server
-cd node_modules/@satachito/jp-tree/demo
-npm i
-es-dev-server --node-resolve
+npm install @satachito/jp-tree-view --save
 ```
 
-### Access to specified address using Chrome
+## Demo
+
+See
+https://satachito.github.io/jp-tree-view/.
 
 We are testing on Chrome only.
 
@@ -35,22 +27,46 @@ We are testing on Chrome only.
 ```
 <!doctype html>
 <html lang=zxx>
-	<title>jp-tree demo</title>
-
-	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500' rel='stylesheet'>
-	<link href='https://fonts.googleapis.com/css?family=Material+Icons&display=block' rel='stylesheet'>
-
+	<title>jp-tree-view demo</title>
+<style>
+.jp-tree-view-null, .jp-tree-view-undefined {
+;	color			: red
+}
+.jp-tree-view-Boolean {
+;	color			: green
+}
+jp-tree-view {
+;	vertical-align	: top
+}
+.jp-tree-view-key::after {
+;	content			: ': '
+}
+jp-tree-view a {
+;	color			: blue
+}
+.jp-tree-view-String::before, .jp-tree-view-String::after {
+;	content			: '"'
+}
+</style>
 <body>
-	<script type=module>
-		import '@satachito/jp-tree'
-	</script>
-	<jp-tree></jp-tree>
-	<jp-tree json=null></jp-tree>
-	<jp-tree json=true></jp-tree>
-	<jp-tree json=false></jp-tree>
-	<jp-tree json=123></jp-tree>
-	<jp-tree json='"ABC"'></jp-tree>
-	<jp-tree
+	<jp-tree-view></jp-tree-view>
+	<br>
+	<jp-tree-view json=null></jp-tree-view>
+	<br>
+	<jp-tree-view json=true></jp-tree-view>
+	<br>
+	<jp-tree-view json=false></jp-tree-view>
+	<br>
+	<jp-tree-view json=0></jp-tree-view>
+	<br>
+	<jp-tree-view json=123></jp-tree-view>
+	<br>
+	<jp-tree-view json='""'></jp-tree-view>
+	<br>
+	<jp-tree-view json='"ABC"'></jp-tree-view>
+	<br>
+	STATIC:
+	<jp-tree-view
 		json='{
 			"jockeys": {
 				"05339": {
@@ -85,91 +101,75 @@ We are testing on Chrome only.
 				}
 			]
 		}'
-		isOpen=true
-	></jp-tree>
+		open
+	></jp-tree-view>
+	<br>
+	DYNAMIC:
 	<script type=module>	
-		class
-		Undef extends HTMLElement {
-			constructor() {
-				super()
-				const jv = document.createElement( 'jp-tree' )
-				jv.props( {}, 'THE UNDEF KEY' )
-				this.attachShadow( { mode: 'open' } ).appendChild( jv )
-			}
-		}
-		customElements.define( 'jp-undef', Undef )
 		const
 		container = {
-			"HorseRaces": {
-				"jockeys": {
-					"05339": {
-						"name": "Christophe Patrice Lemaire"
-					,	"birthday": 19790520
-					}
-				,	"05212": {
-						"name": "Mirco Demuro"
-					,	"birthday": 19790111
-					}
+			"jockeys": {
+				"05339": {
+					"name": "Christophe Patrice Lemaire"
+				,	"birthday": 19790520
 				}
-			,	"races": [
-					{	"date":	20181125
-					,	"name": "Japan Cup"
-					,	"grade": "G1"
-					,	"horses": [ "Almond Eye" ]
-					}
-				,	{	"date":	20181125
-					,	"name": "Keihan Hai"
-					,	"grade": "G3"
-					,	"horses": [ "Danon Smash" ]
-					}
-				,	{	"date":	20190120
-					,	"name": "Tokai S."
-					,	"grade": "G2"
-					,	"horses": [ "Inti" ]
-					}
-				,	{	"date":	20190120
-					,	"name": "American Jockey Club Cup"
-					,	"grade": "G2"
-					,	"horses": [ "Sciacchetra" ]
-					}
-				]
+			,	"05212": {
+					"name": "Mirco Demuro"
+				,	"birthday": 19790111
+				}
 			}
+		,	"races": [
+				{	"date":	20181125
+				,	"name": "Japan Cup"
+				,	"grade": "G1"
+				,	"horses": [ "Almond Eye" ]
+				}
+			,	{	"date":	20181125
+				,	"name": "Keihan Hai"
+				,	"grade": "G3"
+				,	"horses": [ "Danon Smash" ]
+				}
+			,	{	"date":	20190120
+				,	"name": "Tokai S."
+				,	"grade": "G2"
+				,	"horses": [ "Inti" ]
+				}
+			,	{	"date":	20190120
+				,	"name": "American Jockey Club Cup"
+				,	"grade": "G2"
+				,	"horses": [ "Sciacchetra" ]
+				}
+			]
 		}
-		class
-		App extends HTMLElement {
-			constructor() {
-				super()
-				const jv = document.createElement( 'jp-tree' )
-				jv.props( container, 'HorseRaces', true, true )
-				this.attachShadow( { mode: 'open' } ).appendChild( jv )
-			}
-		}
-		customElements.define( 'jp-app', App )
+		document.body.appendChild( new JPTreeView( container, true ) )
 	</script>
-	<jp-undef></jp-undef>
-	<jp-app></jp-app>
+	<script src=./jp-tree-view.js></script>
+
 ```
 
 ## Props
 
-* json - The JSON to be displayed. Expects a valid JSON object.
-* key - The key of the root object.
-* isOpen - Open child elements. Default: true.
-* edit - Edit mode. Default: true.
+* json - The JSON to be displayed. Expects a valid JSON string.
+* open - Open child elements. Default: false.
 * depth - The maximum level of the JSON Tree to be expanded. Specify 0 to Infinity.
 
-## API
+## Constructor
 
-props( container, key, isOpen = false, edit = false, depth = 0 )
+JPTreeView( data, open = false, depth = 0 )
 
-* container - Container object. container[ key ] is to be displayed. Expects a valid JSON object.
-* key - The key of the root object.
-* isOpen - Open child elements. Default: false.
-* edit - Edit mode. Default: false.
+* data - Data to display.
+* open - Open child elements. Default: false.
 * depth - The maximum level of the JSON Tree to be expanded. Specify 0 to Infinity.
 
+## Tag name
 
-## Changelog  
+* jp-tree-view
 
-* 1.0.0 Initial Release
-* 1.0.1 Update README.md
+## Classes
+
+* .jp-tree-view-key
+* .jp-tree-view-null
+* .jp-tree-view-undefined
+* .jp-tree-view-Boolean
+* .jp-tree-view-String
+* .jp-tree-view-Number
