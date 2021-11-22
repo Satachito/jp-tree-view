@@ -30,11 +30,12 @@ JPTreeView extends HTMLElement {
 			switch ( $.constructor ) {
 			case Object:
 			case Array:
-				const triangle = this.appendChild( document.createElement( 'a' ) )
+				const triangle = document.createElement( 'a' )
 				triangle.onclick = () => this.props( $, !open, depth, cur_depth )
 				if ( open && ( depth == 0 || cur_depth < depth ) ) {
 					triangle.textContent = '▼ '
 					this.appendChild( document.createTextNode( Array.isArray( $ ) ? '[' : '{' ) )
+					this.appendChild( triangle )
 					this.appendChild( document.createElement( 'br' ) )
 					Object.keys( $ ).forEach(
 						key => {
@@ -48,6 +49,7 @@ JPTreeView extends HTMLElement {
 					this.appendChild( document.createTextNode( Array.isArray( $ ) ? ']' : '}' ) )
 				} else {
 					triangle.textContent = '▶ '
+					this.appendChild( triangle )
 					this.appendChild( document.createTextNode( `${ Array.isArray( $ ) ? '[...]' : '{...}' }(${ Object.keys( $ ).length })` ) )
 				}
 				break
