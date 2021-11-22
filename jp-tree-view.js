@@ -14,7 +14,7 @@ JPTreeView extends HTMLElement {
 		OnA( 'depth', $ => depth	= $ )
 		setTimeout( () => this.props( _, open, depth, 0 ), 0 )
 	}
-	props( $, open, depth, cur_depth ) {
+	props( $, open, depth, cur_depth = 0 ) {
 		this.textContent = ''
 		switch ( $ ) {
 		case void 0:
@@ -34,9 +34,9 @@ JPTreeView extends HTMLElement {
 				triangle.onclick = () => this.props( $, !open, depth, cur_depth )
 				if ( open && ( depth == 0 || cur_depth < depth ) ) {
 					triangle.textContent = '▼ '
-					this.appendChild( document.createTextNode( `${ Array.isArray( $ ) ? '[' : '{' }` ) )
+					this.appendChild( document.createTextNode( Array.isArray( $ ) ? '[' : '{' ) )
 					this.appendChild( document.createElement( 'br' ) )
-					Object.keys( $ ).sort().forEach(
+					Object.keys( $ ).forEach(
 						key => {
 							const keySpan = this.appendChild( document.createElement( 'span' ) )
 							keySpan.textContent = key
@@ -45,7 +45,7 @@ JPTreeView extends HTMLElement {
 							this.appendChild( document.createElement( 'br' ) )
 						}
 					)
-					this.appendChild( document.createTextNode( `${ Array.isArray( $ ) ? ']' : '}' }` ) )
+					this.appendChild( document.createTextNode( Array.isArray( $ ) ? ']' : '}' ) )
 				} else {
 					triangle.textContent = '▶ '
 					this.appendChild( document.createTextNode( `${ Array.isArray( $ ) ? '[...]' : '{...}' }(${ Object.keys( $ ).length })` ) )
