@@ -62,3 +62,5 @@ JPTreeView extends HTMLElement {
 	}
 }
 customElements.define( 'jp-tree-view', JPTreeView )
+
+export default JPTreeView
